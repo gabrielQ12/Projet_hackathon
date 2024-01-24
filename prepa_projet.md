@@ -47,11 +47,6 @@ profil/$#       |    GET     | récupérer le profil d'un cadidat               
 skilltrea/update|   PATCH    | modifier l'arbre de compétences                | un arbre de compétances
 
 
-
-
-
-
-
 ## MCD
 Voir schema brouillon_mcd
 
@@ -62,7 +57,7 @@ Entité USER:
         id, nom, prenom, role, mdp,  mail
 
 Entité CANDIDAT herite de USER:
-        id as USER, presentation, lien github, lien linkedin, lien portfolio, lien dailyDev, lien autre, arbre réussi
+        id as USER, presentation, lien github, lien linkedin, lien portfolio, lien dailyDev, lien autre, #ARBRE_id,
 
 Entité ENTREPRISE herite de USER:
         id as USER, nom de l'entreprise
@@ -76,51 +71,85 @@ Entité ARBRE:
 Entité TACHE:
         id, #ARBRE_id, dificulté, temps, nom, description, test unitaire reussi, id tache parente
 
-Enum ROLE : 
+Enum : 
         CANDIDAT, ENTREPRISE, FRANCE TRAVAIL
 
 ## Dictionnaire de données
 
 Table USER : 
 
-| Champ           | Type       | Spécificités                                   | Description                             |
-|-----------------|------------|------------------------------------------------|-----------------------------------------|
+| Champ           | Type       | Spécificités                                   | Description                              |
+|-----------------|------------|------------------------------------------------|------------------------------------------|
+|  ID             | INTEGER    | INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY   | Identification unique généré auto en BDD |
+|  name           | TEXT       | NOT NULL                                       | Nom de l'utilisateur                     |
+|  prenom         | TEXT       | NOT NULL                                       | Prenom de l'utilisateur                  |
+|  Role           | ENUM       |                                                | Role de l'utilisateur                    |
+|  MotDePasse     | VARCHAR(72)| NOT NULL UNIQUE                                | Mot de passe Hashé                       |
+|  mail           | TEXT       | NOT NULL UNIQUE                                | Adresse mail de l'utilisateur            |
 
+----------------
 
 Table CANDIDAT : 
 
-| Champ           | Type       | Spécificités                                   | Description                             |
-|-----------------|------------|------------------------------------------------|-----------------------------------------|
+| Champ           | Type        | Spécificités                                   | Description                             |
+|-----------------|-------------|------------------------------------------------|-----------------------------------------|
+|  ID             | INTEGER     | INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY   | Identification unique généré auto en BDD|
+|  ID_USER        | INTEGER     | INT REFERENCES user (id)                       | Clé étrangère fais référence a USER     |
+|  Presentation   | TEXT        | NOT NULL                                       | Presentation du candidat                |
+|  LienGithub     | TEXT        |                                                | Lien vers le profil github              |
+|  LienLinkedIN   | TEXT        |                                                | Lien vers le profil LinkedIN            | 
+|  LienPortfolio  | TEXT        |                                                | Lien vers le profil Portfolio           | 
+|  LienDailyDev   | TEXT        |                                                | Lien vers le profil DailyDev            | 
+|  LienAutre      | TEXT        |                                                | Lien libre                              | 
+|  ID_Arbre       | INTEGER     | INT REFERENCES arbres (id)                     | Clé étrangère fais référence a ARBRE    |
 
+----------------
 
 Table ENTREPRISE 
 
 | Champ           | Type       | Spécificités                                   | Description                             |
 |-----------------|------------|------------------------------------------------|-----------------------------------------|
+|  ID             | INTEGER    | INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY   | Identification unique généré auto en BDD|
+|  nomEntreprise  | TEXT       | NOT NULL UNIQUE                                | Nom de l'entreprise                     |
+|  ID_USER        | INTEGER    | INT REFERENCES user (id)                       | ID hérité de USER                       | 
 
+----------------
 
 Table FRANCE TRAVAIL :
 
 | Champ           | Type       | Spécificités                                   | Description                             |
 |-----------------|------------|------------------------------------------------|-----------------------------------------|
+|  ID             | INTEGER     | INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY   | Identification unique généré auto en BDD|
+|  ID_USER        | INTEGER     | INT REFERENCES user (id)                       | Clé étrangère fais référence a USER     |
 
+----------------
 
 Table ARBRE : 
 
 | Champ           | Type       | Spécificités                                   | Description                             |
 |-----------------|------------|------------------------------------------------|-----------------------------------------|
+|  ID             | INTEGER    | INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY   | Identification unique généré auto en BDD|
+|  ID_TACHE       | INTEGER    | INT REFERENCES tache (id)                      | ID hérité de TACHE                      |
+|  placeDeLaTache | INTEGER    | INT NOT NULL                                   | Localisation de la tache au seins d'un arbre|
+|  ID_USER        | INTEGER    | INT REFERENCES user (id)                       | Clé étrangère fais référence a USER     |
 
+----------------
 
 Table TACHE : 
 
 | Champ           | Type       | Spécificités                                   | Description                             |
 |-----------------|------------|------------------------------------------------|-----------------------------------------|
+|  ID             | INTEGER    | INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY   | Identification unique généré auto en BDD|
+|  ID_Arbre       | INTEGER    | INT REFERENCES arbres (id)                     | Clé étrangère fais référence a ARBRE    |
+|  Dificulté      | INTEGER    | INT NOT NULL                                   | Niveau de dificulté de la tache         |
+|  Temps          | ITIMESTAMP | UNIQUE                                         | Durée de la tache                       |
+|  name           | TEXT       | NOT NULL                                       | Nom de la tache                         |
+|  Description    | TEXT       | NOT NULL                                       | Description de la tache                 |
+|  TestOk         | BOOL       | DEFAULT false                                  | Check pour savoir si le test unitaire prévu est réussi |
+## |  IDTacheParente | INTEGER    |  ?? Je ne sais aps si c'est une clé étrangère ou juste une valeur qui fais référence a l'ID
 
+----------------
 
-Table ROLE : 
-
-| Champ           | Type       | Spécificités                                   | Description                             |
-|-----------------|------------|------------------------------------------------|-----------------------------------------|
 
 
 ## Notes et idées
