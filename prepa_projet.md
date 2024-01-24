@@ -76,7 +76,7 @@ Entité ARBRE:
 Entité TACHE:
         id, #ARBRE_id, dificulté, temps, nom, description, test unitaire reussi, id tache parente
 
-Entité ROLE : 
+Enum ROLE : 
         CANDIDAT, ENTREPRISE, FRANCE TRAVAIL
 
 ## Dictionnaire de données
