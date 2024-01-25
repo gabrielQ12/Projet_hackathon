@@ -39,12 +39,12 @@ France travail       |  création d'arbre de compétance          | evaluer les 
 |URL            | Requetes   | Description                                    | Données attendues 
 signUP/         |    POST    | création d'un compte utilisateur ou entreprise | nom / prenom / MDP /  mail / genre / liens vers les divers sites
 signIN/         |    POST    | acceder a son compte                           | nom / mdp
-skiltrea/create |    POST    | créer un arbre de compétances a tester         | compétances / dificulté / temps / info / validation 
+skilltree/create|    POST    | créer un arbre de compétances a tester         | compétances / dificulté / temps / info / validation 
 job/create      |    POST    | créer une annonce                              | info post / salaire / type de contrat / info Entreprise
 jobs/all        |    GET     | récupérer les annonces                         | toutes les annonces
 job/$#          |    GET     | récupérer une annonce                          | une annonce 
-profil/$#       |    GET     | récupérer le profil d'un cadidat               | un profil complet 
-skilltrea/update|   PATCH    | modifier l'arbre de compétences                | un arbre de compétances
+profile/$#      |    GET     | récupérer le profil d'un cadidat               | un profil complet 
+skilltree/update|   PATCH    | modifier l'arbre de compétences                | un arbre de compétances
 
 
 ## MCD
@@ -59,7 +59,7 @@ Entité USER:
 Entité CANDIDAT herite de USER:
         id as USER, presentation, lien github, lien linkedin, lien portfolio, lien dailyDev, lien autre, #ARBRE_id,
 
-Entité ENTREPRISE herite de USER:
+Entité recruiter herite de USER:
         id as USER, nom de l'entreprise
 
 Entité FRANCE TRAVAIL herite de USER:
@@ -84,7 +84,7 @@ Table USER :
 |  name           | TEXT       | NOT NULL                                       | Nom de l'utilisateur                     |
 |  prenom         | TEXT       | NOT NULL                                       | Prenom de l'utilisateur                  |
 |  Role           | ENUM       |                                                | Role de l'utilisateur                    |
-|  MotDePasse     | VARCHAR(72)| NOT NULL UNIQUE                                | Mot de passe Hashé                       |
+|  MotDePasse     | VARCHAR(60)| NOT NULL UNIQUE                                | Mot de passe Hashé                       |
 |  mail           | TEXT       | NOT NULL UNIQUE                                | Adresse mail de l'utilisateur            |
 
 ----------------
